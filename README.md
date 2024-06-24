@@ -1,1 +1,2 @@
-# mslearn-ai-vision.id-id
+# mslearn-ai-vision
+File lab untuk modul Azure AI Visual
