@@ -19,7 +19,7 @@ Jika Anda belum mengkloning repositori kode **Azure AI Visual** ke lingkungan te
 
     > **Catatan**: Jika Anda diminta untuk menambahkan aset yang diperlukan guna membangun dan men-debug, pilih **Tidak Sekarang**. Jika Anda menerima Pesan *Terdeteksi Proyek Azure Function di folder*, Anda dapat menutup pesan tersebut dengan aman.
 
-## Memprovisikan sumber daya Layanan Azure AI
+## Menyediakan sumber daya Layanan Azure AI
 
 Jika Belum memilikinya di langganan, Anda harus menyediakan sumber daya **Layanan Azure AI**.
 
@@ -27,7 +27,7 @@ Jika Belum memilikinya di langganan, Anda harus menyediakan sumber daya **Layana
 2. Di bilah pencarian teratas, cari *layanan Azure AI*, pilih **Layanan Azure AI**, dan buat sumber daya akun multi-layanan layanan Azure AI dengan pengaturan berikut:
     - **Langganan**: *Langganan Azure Anda*
     - **Grup sumber daya**: *Pilih atau buat grup sumber daya (jika Anda menggunakan langganan terbatas, Anda mungkin tidak memiliki izin untuk membuat grup sumber daya baru - gunakan yang disediakan)*
-    - **Wilayah**: *Pilih dari US Timur, Prancis Tengah, Korea Tengah, Eropa Utara, Asia Tenggara, Eropa Barat, AS Barat, atau Asia Timur\**
+    - **Wilayah**: *Pilih dari Asia Tenggara, Eropa Barat, Eropa Utara, Korea Tengah, Prancis Tengah, US Barat, US Timur, atau Asia Timur\**
     - **Nama**: *Masukkan nama unik*
     - **Tingkat harga**: Standar S0
 
@@ -52,7 +52,7 @@ Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan
     dotnet add package Azure.AI.Vision.ImageAnalysis -v 1.0.0-beta.1
     ```
 
-    > **Catatan**: Jika diminta untuk menginstal ekstensi dev kit, Anda dapat menutup pesan dengan aman.
+    > **Catatan**: Jika diminta untuk menginstal ekstensi kit pengembangan, Anda dapat menutup pesan tersebut dengan aman.
 
     **Python**
     
@@ -64,7 +64,7 @@ Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan
     - **C#**: appsettings.json
     - **Python**: .env
 
-    Buka file konfigurasi dan perbarui nilai konfigurasi yang dikandungnya untuk mencerminkan **titik akhir** dan **kunci**autentikasi untuk sumber daya layanan Azure AI Anda. Simpan perubahan Anda.
+    Buka file konfigurasi dan perbarui nilai konfigurasi di dalamnya agar mencerminkan **titik akhir** dan **kunci** autentikasi untuk sumber daya layanan Azure AI Anda. Simpan perubahan Anda.
 4. Perhatikan bahwa folder **image-analysis** berisi file kode untuk aplikasi klien:
 
     - **C#**: Program.cs
@@ -473,9 +473,9 @@ body = {
 response = requests.post(url, headers=headers, json=body)
 
 image=response.content
-with open("backgroundForeground.png", "wb") as file:
+with open("background.png", "wb") as file:
     file.write(image)
-print('  Results saved in backgroundForeground.png \n')
+print('  Results saved in background.png \n')
 ```
     
 2. Simpan perubahan Anda dan jalankan program sekali untuk setiap file gambar di folder **gambar**, membuka file **background.png** yang dihasilkan di folder yang sama dengan file kode Anda untuk setiap gambar.  Perhatikan bagaimana latar belakang telah dihapus dari setiap gambar.
