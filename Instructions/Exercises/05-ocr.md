@@ -21,10 +21,10 @@ Jika Anda belum melakukannya, Anda harus mengkloning repositori kode untuk kursu
 
 ## Menyediakan sumber daya Layanan Azure AI
 
-Jika belum memilikinya di langganan, Anda harus menyediakan sumber daya **Layanan Azure AI**.
+Jika Belum memilikinya di langganan, Anda harus menyediakan sumber daya **Layanan Azure AI**.
 
 1. Buka portal Microsoft Azure di `https://portal.azure.com`, dan masuk menggunakan akun Microsoft yang terkait dengan langganan Azure Anda.
-2. Pada bilah pencarian di bagian atas, cari *layanan Azure AI*, pilih **Layanan Azure AI**, lalu buat sumber daya akun multi-layanan layanan Azure AI dengan pengaturan berikut:
+2. Di bilah pencarian teratas, cari *layanan Azure AI*, pilih **Layanan Azure AI**, dan buat sumber daya akun multi-layanan layanan Azure AI dengan pengaturan berikut:
     - **Langganan**: *Langganan Azure Anda*
     - **Grup sumber daya**: *Pilih atau buat grup sumber daya (jika Anda menggunakan langganan terbatas, Anda mungkin tidak memiliki izin untuk membuat grup sumber daya baru - gunakan yang disediakan)*
     - **Wilayah**: *Pilih dari Asia Tenggara, Eropa Barat, Eropa Utara, Korea Tengah, Prancis Tengah, US Barat, US Timur, atau Asia Timur\**
@@ -49,7 +49,7 @@ Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan
     **C#**
     
     ```
-    dotnet add package Azure.AI.Vision.ImageAnalysis -v 1.0.0-beta.1
+    dotnet add package Azure.AI.Vision.ImageAnalysis -v 1.0.0-beta.3
     ```
 
     > **Catatan**: Jika diminta untuk menginstal ekstensi kit pengembangan, Anda dapat menutup pesan tersebut dengan aman.
@@ -57,7 +57,7 @@ Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan
     **Python**
     
     ```
-    pip install azure-ai-vision-imageanalysis==1.0.0b1
+    pip install azure-ai-vision-imageanalysis==1.0.0b3
     ```
 
 3. Lihat konten folder **read-text**, dan perhatikan bahwa folder tersebut berisi file untuk pengaturan konfigurasi:
@@ -70,7 +70,7 @@ Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan
 
 ## Menggunakan Azure AI Visual SDK untuk membaca teks dari gambar
 
-Salah satu fitur **Azure AI Visual SDK** adalah membaca teks dari gambar. Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan sebagian yang menggunakan Azure AI Visual SDK untuk membaca teks dari gambar.
+Salah satu fitur **SDK Azure AI Visual** adalah membaca teks dari gambar. Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan sebagian yang menggunakan Azure AI Visual SDK untuk membaca teks dari gambar.
 
 1. Folder **read-text** berisi file kode untuk aplikasi klien:
 

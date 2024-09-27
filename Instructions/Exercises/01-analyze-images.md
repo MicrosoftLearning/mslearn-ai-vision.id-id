@@ -24,18 +24,19 @@ Jika Anda belum mengkloning repositori kode **Azure AI Visual** ke lingkungan te
 Jika Belum memilikinya di langganan, Anda harus menyediakan sumber daya **Layanan Azure AI**.
 
 1. Buka portal Microsoft Azure di `https://portal.azure.com`, dan masuk menggunakan akun Microsoft yang terkait dengan langganan Azure Anda.
-2. Di bilah pencarian teratas, cari *layanan Azure AI*, pilih **Layanan Azure AI**, dan buat sumber daya akun multi-layanan layanan Azure AI dengan pengaturan berikut:
+2. Pilih **Buat sumber daya**.
+3. Pada bilah pencarian, cari *Layanan AI Azure*, pilih **Layanan AI Azure**, dan buat sumber daya akun multi-layanan Azure dengan pengaturan berikut:
     - **Langganan**: *Langganan Azure Anda*
     - **Grup sumber daya**: *Pilih atau buat grup sumber daya (jika Anda menggunakan langganan terbatas, Anda mungkin tidak memiliki izin untuk membuat grup sumber daya baru - gunakan yang disediakan)*
-    - **Wilayah**: *Pilih dari Asia Tenggara, Eropa Barat, Eropa Utara, Korea Tengah, Prancis Tengah, US Barat, US Timur, atau Asia Timur\**
+    - **Wilayah**: *Pilih dari AS Timur, AS Barat, Prancis Tengah, Korea Tengah, Eropa Utara, Asia Tenggara, Eropa Barat, atau Asia Timur\**
     - **Nama**: *Masukkan nama unik*
     - **Tingkat harga**: Standar S0
 
-    \*Fitur Azure AI Visual 4.0 saat ini hanya tersedia di wilayah ini.
+    \*Set fitur lengkap Azure AI Vision 4.0 saat ini hanya tersedia di wilayah ini.
 
-3. Pilih kotak centang yang diperlukan dan buat sumber daya.
-4. Tunggu hingga penyebaran selesai, lalu lihat detail penyebaran.
-5. Saat sumber daya telah diterapkan, buka dan lihat halaman **Kunci dan Titik Akhir**. Anda akan memerlukan titik akhir dan salah satu kunci dari halaman ini dalam prosedur selanjutnya.
+4. Pilih kotak centang yang diperlukan dan buat sumber daya.
+5. Tunggu hingga penyebaran selesai, lalu lihat detail penyebaran.
+6. Saat sumber daya telah diterapkan, buka dan lihat halaman **Kunci dan Titik Akhir**. Anda akan memerlukan titik akhir dan salah satu kunci dari halaman ini dalam prosedur selanjutnya.
 
 ## Bersiap untuk menggunakan Azure AI Visual SDK
 
@@ -49,7 +50,7 @@ Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan
     **C#**
     
     ```
-    dotnet add package Azure.AI.Vision.ImageAnalysis -v 1.0.0-beta.1
+    dotnet add package Azure.AI.Vision.ImageAnalysis -v 1.0.0-beta.3
     ```
 
     > **Catatan**: Jika diminta untuk menginstal ekstensi kit pengembangan, Anda dapat menutup pesan tersebut dengan aman.
@@ -57,8 +58,10 @@ Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan
     **Python**
     
     ```
-    pip install azure-ai-vision-imageanalysis==1.0.0b1
+    pip install azure-ai-vision-imageanalysis==1.0.0b3
     ```
+
+    > **Tip**: Jika Anda melakukan lab ini di komputer Anda sendiri, Anda juga perlu menginstal `matplotlib` dan `pillow`.
     
 3. Lihat konten folder **image-analysis**, dan perhatikan bahwa folder tersebut berisi file untuk pengaturan konfigurasi:
     - **C#**: appsettings.json

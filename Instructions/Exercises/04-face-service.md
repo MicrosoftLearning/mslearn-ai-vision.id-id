@@ -50,33 +50,32 @@ Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan
     **C#**
 
     ```
-    dotnet add package Azure.AI.Vision.ImageAnalysis -v 0.15.1-beta.1
+    dotnet add package Azure.AI.Vision.ImageAnalysis -v 1.0.0-beta.3
     ```
 
     **Python**
 
     ```
-    pip install azure-ai-vision==0.15.1b1
+    pip install azure-ai-vision==1.0.0b3
     ```
     
 3. Lihat konten folder **computer-vision**, dan perhatikan bahwa folder tersebut berisi file untuk setelan konfigurasi:
     - **C#**: appsettings.json
     - **Python**: .env
 
-4. Buka file konfigurasi dan perbarui nilai konfigurasi yang dikandungnya untuk mencerminkan **titik akhir** dan **kunci**autentikasi untuk sumber daya layanan Azure AI Anda. Simpan perubahan Anda.
+4. Buka file konfigurasi dan perbarui nilai konfigurasi di dalamnya agar mencerminkan **titik akhir** dan **kunci** autentikasi untuk sumber daya layanan Azure AI Anda. Simpan perubahan Anda.
 
 5. Perhatikan bahwa folder **computer-vision** berisi file kode untuk aplikasi klien:
 
     - **C#**: Program.cs
     - **Python**: detect-people.py
 
-6. Buka file kode dan di bagian atas, di bawah referensi namespace yang ada, temukan komentar **Impor namespace**. Kemudian, di bawah komentar ini, tambahkan kode khusus bahasa berikut untuk mengimpor namespace layanan, Anda harus menggunakan Azure AI Vision SDK:
+6. Buka file kode dan di bagian atas, di bawah referensi namespace yang ada, temukan komentar **Impor namespace**. Kemudian, di bawah komentar ini, tambahkan kode khusus bahasa berikut untuk mengimpor namespace layanan, Anda harus menggunakan Azure AI Visual SDK:
 
     **C#**
 
     ```C#
-    // import namespaces
-    using Azure.AI.Vision.Common;
+    // Import namespaces
     using Azure.AI.Vision.ImageAnalysis;
     ```
 
@@ -84,7 +83,9 @@ Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan
 
     ```Python
     # import namespaces
-    import azure.ai.vision as sdk
+    from azure.ai.vision.imageanalysis import ImageAnalysisClient
+    from azure.ai.vision.imageanalysis.models import VisualFeatures
+    from azure.core.credentials import AzureKeyCredential
     ```
 
 ## Melihat gambar yang akan Anda analisis
@@ -98,14 +99,14 @@ Dalam latihan ini, Anda akan menggunakan layanan Azure AI Vision untuk menganali
 
 Sekarang Anda siap menggunakan SDK untuk memanggil layanan Visi dan mendeteksi wajah dalam gambar.
 
-1. Dalam file kode untuk aplikasi klien Anda (**Program.cs** atau **detect-people.py**), dalam fungsi **Utama**, perhatikan bahwa kode untuk memuat pengaturan konfigurasi telah disediakan. Kemudian temukan komentar **Autentikasi klien Azure AI Vision**. Kemudian, di bawah komentar ini, tambahkan kode khusus bahasa berikut untuk membuat dan mengautentikasi objek klien Azure AI Vision:
+1. Dalam file kode untuk aplikasi klien Anda (**Program.cs** atau **detect-people.py**), dalam fungsi **Utama**, perhatikan bahwa kode untuk memuat pengaturan konfigurasi telah disediakan. Kemudian temukan komentar **Autentikasi klien Azure AI Vision**. Kemudian, di bawah komentar ini, tambahkan kode khusus bahasa berikut untuk membuat dan mengautentikasi objek klien Azure AI Visual:
 
     **C#**
 
     ```C#
     // Authenticate Azure AI Vision client
-    var cvClient = new VisionServiceOptions(
-        aiSvcEndpoint,
+    ImageAnalysisClient cvClient = new ImageAnalysisClient(
+        new Uri(aiSvcEndpoint),
         new AzureKeyCredential(aiSvcKey));
     ```
 
@@ -113,136 +114,70 @@ Sekarang Anda siap menggunakan SDK untuk memanggil layanan Visi dan mendeteksi w
 
     ```Python
     # Authenticate Azure AI Vision client
-    cv_client = sdk.VisionServiceOptions(ai_endpoint, ai_key)
+    cv_client = ImageAnalysisClient(
+        endpoint=ai_endpoint,
+        credential=AzureKeyCredential(ai_key)
+    )
     ```
 
 2. Dalam fungsi **Utama**, di bawah kode yang baru saja Anda tambahkan, perhatikan bahwa kode menentukan jalur ke file gambar lalu meneruskan jalur gambar ke fungsi bernama **AnalyzeImage**. Fungsi ini belum sepenuhnya diimplementasikan.
 
-3. Dalam fungsi **AnalyzeImage**, di bawah komentar **Tentukan fitur yang akan diambil (PEOPLE)**, tambahkan kode berikut:
+3. Dalam fungsi **AnalyzeImage** di bawah komentar **Dapatkan hasil dengan menentukan fitur yang akan diambil (PEOPLE)**, tambahkan kode berikut:
 
     **C#**
 
     ```C#
-    // Specify features to be retrieved (PEOPLE)
-    Features =
-        ImageAnalysisFeature.People
+    // Get result with specified features to be retrieved (PEOPLE)
+    ImageAnalysisResult result = client.Analyze(
+        BinaryData.FromStream(stream),
+        VisualFeatures.People);
     ```
 
     **Python**
 
     ```Python
-    # Specify features to be retrieved (PEOPLE)
-    analysis_options = sdk.ImageAnalysisOptions()
-    
-    features = analysis_options.features = (
-        sdk.ImageAnalysisFeature.PEOPLE
-    )    
+    # Get result with specified features to be retrieved (PEOPLE)
+    result = cv_client.analyze(
+        image_data=image_data,
+        visual_features=[
+            VisualFeatures.PEOPLE],
+    )
     ```
 
-4. Dalam fungsi **AnalyzeImage**, di bawah komentar **Dapatkan analisis gambar**, tambahkan kode berikut:
+4. Dalam fungsi **AnalyzeImage** di bawah komentar **Gambar kotak batas di sekitar orang yang terdeteksi**, tambahkan kode berikut:
 
     **C#**
 
     ```C
-    // Get image analysis
-    using var imageSource = VisionSource.FromFile(imageFile);
-    
-    using var analyzer = new ImageAnalyzer(serviceOptions, imageSource, analysisOptions);
-    
-    var result = analyzer.Analyze();
-    
-    if (result.Reason == ImageAnalysisResultReason.Analyzed)
+    // Draw bounding box around detected people
+    foreach (DetectedPerson person in result.People.Values)
     {
-        // Get people in the image
-        if (result.People != null)
+        if (person.Confidence > 0.5) 
         {
-            Console.WriteLine($" People:");
-        
-            // Prepare image for drawing
-            System.Drawing.Image image = System.Drawing.Image.FromFile(imageFile);
-            Graphics graphics = Graphics.FromImage(image);
-            Pen pen = new Pen(Color.Cyan, 3);
-            Font font = new Font("Arial", 16);
-            SolidBrush brush = new SolidBrush(Color.WhiteSmoke);
-        
-            foreach (var person in result.People)
-            {
-                // Draw object bounding box if confidence > 50%
-                if (person.Confidence > 0.5)
-                {
-                    // Draw object bounding box
-                    var r = person.BoundingBox;
-                    Rectangle rect = new Rectangle(r.X, r.Y, r.Width, r.Height);
-                    graphics.DrawRectangle(pen, rect);
-        
-                    // Return the confidence of the person detected
-                    Console.WriteLine($"   Bounding box {person.BoundingBox}, Confidence {person.Confidence:0.0000}");
-                }
-            }
-        
-            // Save annotated image
-            String output_file = "detected_people.jpg";
-            image.Save(output_file);
-            Console.WriteLine("  Results saved in " + output_file + "\n");
+            // Draw object bounding box
+            var r = person.BoundingBox;
+            Rectangle rect = new Rectangle(r.X, r.Y, r.Width, r.Height);
+            graphics.DrawRectangle(pen, rect);
         }
+
+        // Return the confidence of the person detected
+        //Console.WriteLine($"   Bounding box {person.BoundingBox.ToString()}, Confidence: {person.Confidence:F2}");
     }
-    else
-    {
-        var errorDetails = ImageAnalysisErrorDetails.FromResult(result);
-        Console.WriteLine(" Analysis failed.");
-        Console.WriteLine($"   Error reason : {errorDetails.Reason}");
-        Console.WriteLine($"   Error code : {errorDetails.ErrorCode}");
-        Console.WriteLine($"   Error message: {errorDetails.Message}\n");
-    }
-    
     ```
 
     **Python**
     
     ```Python
-    # Get image analysis
-    image = sdk.VisionSource(image_file)
-    
-    image_analyzer = sdk.ImageAnalyzer(cv_client, image, analysis_options)
-    
-    result = image_analyzer.analyze()
-    
-    if result.reason == sdk.ImageAnalysisResultReason.ANALYZED:
-        # Get people in the image
-        if result.people is not None:
-            print("\nPeople in image:")
-        
-            # Prepare image for drawing
-            image = Image.open(image_file)
-            fig = plt.figure(figsize=(image.width/100, image.height/100))
-            plt.axis('off')
-            draw = ImageDraw.Draw(image)
-            color = 'cyan'
-        
-            for detected_people in result.people:
-                # Draw object bounding box if confidence > 50%
-                if detected_people.confidence > 0.5:
-                    # Draw object bounding box
-                    r = detected_people.bounding_box
-                    bounding_box = ((r.x, r.y), (r.x + r.w, r.y + r.h))
-                    draw.rectangle(bounding_box, outline=color, width=3)
-            
-                    # Return the confidence of the person detected
-                    print(" {} (confidence: {:.2f}%)".format(detected_people.bounding_box, detected_people.confidence * 100))
-                    
-            # Save annotated image
-            plt.imshow(image)
-            plt.tight_layout(pad=0)
-            outputfile = 'detected_people.jpg'
-            fig.savefig(outputfile)
-            print('  Results saved in', outputfile)
-    
-    else:
-        error_details = sdk.ImageAnalysisErrorDetails.from_result(result)
-        print(" Analysis failed.")
-        print("   Error reason: {}".format(error_details.reason))
-        print("   Error code: {}".format(error_details.error_code))
-        print("   Error message: {}".format(error_details.message))
+    # Draw bounding box around detected people
+    for detected_people in result.people.list:
+        if(detected_people.confidence > 0.5):
+            # Draw object bounding box
+            r = detected_people.bounding_box
+            bounding_box = ((r.x, r.y), (r.x + r.width, r.y + r.height))
+            draw.rectangle(bounding_box, outline=color, width=3)
+
+        # Return the confidence of the person detected
+        #print(" {} (confidence: {:.2f}%)".format(detected_people.bounding_box, detected_people.confidence * 100))
     ```
 
 5. Simpan perubahan Anda dan kembali ke terminal terintegrasi untuk folder **computer-vision**, dan masukkan perintah berikut untuk menjalankan program:
@@ -260,7 +195,9 @@ Sekarang Anda siap menggunakan SDK untuk memanggil layanan Visi dan mendeteksi w
     ```
 
 6. Amati output, yang harus menunjukkan jumlah wajah yang terdeteksi.
-7. Lihat file **detected_people.jpg** yang dihasilkan di folder yang sama dengan file kode Anda untuk melihat wajah yang diannotasi. Dalam hal ini, kode Anda telah menggunakan atribut wajah untuk melabeli lokasi di kiri atas kotak, dan koordinat kotak pembatas untuk menggambar persegi panjang di sekitar setiap wajah.
+7. Lihat file **people.jpg** yang dihasilkan di folder yang sama dengan file kode Anda untuk melihat wajah yang diannotasi. Dalam hal ini, kode Anda telah menggunakan atribut wajah untuk melabeli lokasi di kiri atas kotak, dan koordinat kotak pembatas untuk menggambar persegi panjang di sekitar setiap wajah.
+
+Jika Anda ingin melihat skor keyakinan semua orang yang terdeteksi layanan, Anda dapat membatalkan komentar baris kode di bawah komentar `Return the confidence of the person detected` dan menjalankan ulang kode.
 
 ## Bersiap untuk menggunakan Face SDK
 
@@ -285,7 +222,7 @@ Meskipun layanan **Azure AI Vision** menawarkan deteksi wajah dasar (bersama den
     - **C#**: appsettings.json
     - **Python**: .env
 
-4. Buka file konfigurasi dan perbarui nilai konfigurasi yang dikandungnya untuk mencerminkan **titik akhir** dan **kunci**autentikasi untuk sumber daya layanan Azure AI Anda. Simpan perubahan Anda.
+4. Buka file konfigurasi dan perbarui nilai konfigurasi di dalamnya agar mencerminkan **titik akhir** dan **kunci** autentikasi untuk sumber daya layanan Azure AI Anda. Simpan perubahan Anda.
 
 5. Perhatikan bahwa folder **face-api** berisi file kode untuk aplikasi klien:
 
@@ -477,7 +414,7 @@ with open(image_file, mode="rb") as image_data:
     dotnet run
     ```
 
-    *Keluaran C# mungkin menampilkan peringatan tentang fungsi asinkron yang sekarang menggunakan operator **menunggu**. Anda dapat mengabaikan ini.*
+    *Output C# mungkin menampilkan peringatan tentang fungsi asinkron yang sekarang menggunakan operator **menunggu** Anda dapat mengabaikan ini.*
 
     **Python**
 
