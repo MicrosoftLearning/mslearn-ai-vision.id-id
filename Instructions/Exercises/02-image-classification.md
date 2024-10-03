@@ -24,7 +24,7 @@ Jika Anda belum mengkloning repositori kode **Azure AI Visual** ke lingkungan te
 Jika belum memilikinya dalam langganan, Anda harus menyediakan sumber daya **Layanan Azure AI**.
 
 1. Buka portal Microsoft Azure di `https://portal.azure.com`, dan masuk menggunakan akun Microsoft yang terkait dengan langganan Azure Anda.
-2. Di bilah pencarian teratas, cari *layanan Azure AI*, pilih **Layanan Azure AI**, dan buat sumber daya akun multilayanan layanan Azure AI dengan pengaturan berikut:
+2. Di bilah pencarian teratas, cari *layanan Azure AI*, pilih **Layanan Azure AI**, dan buat sumber daya akun multi-layanan layanan Azure AI dengan pengaturan berikut:
     - **Langganan**: *Langganan Azure Anda*
     - **Grup sumber daya**: *Pilih atau buat grup sumber daya (jika Anda menggunakan langganan terbatas, Anda mungkin tidak memiliki izin untuk membuat grup sumber daya baru - gunakan yang disediakan)*
     - **Wilayah**: *Pilih dari US Timur, Eropa Barat, US Barat 2\**
@@ -44,6 +44,8 @@ Kami juga memerlukan akun penyimpanan untuk menyimpan gambar pelatihan.
     - **Nama Akun Penyimpanan**: customclassifySUFFIX 
         - *catatan: ganti `SUFFIX` token dengan inisial Anda atau nilai lain untuk memastikan nama sumber daya unik secara global.*
     - **Wilayah**: *Pilih wilayah yang sama dengan yang Anda gunakan untuk sumber daya Layanan Azure AI Anda*
+    - **Layanan utama**: Azure Blob Storage atau Azure Data Lake Storage Gen 2
+    - **Beban kerja utama**: Lainnya
     - **Performa**: Standar
     - **Redundansi**: Penyimpanan redundan secara lokal (LRS)
 1. Saat akun penyimpanan Anda sedang dibuat, buka Visual studio code, dan luaskan folder **Labfiles/02-image-classification**.
@@ -58,18 +60,19 @@ Kami juga memerlukan akun penyimpanan untuk menyimpan gambar pelatihan.
 1. Tutup file JSON serta Windows PowerShell, dan kembali ke jendela browser Anda.
 1. Akun penyimpanan Anda harus lengkap. Buka akun penyimpanan Anda.
 1. Aktifkan akses publik di akun penyimpanan. Di panel kiri, navigasikan ke **Konfigurasi** di grup **Pengaturan**, dan aktifkan *Perbolehkan akses anonim Blob* Pilih **Simpan**
-1. Di panel kiri, pilih **Kontainer** dan buat kontainer baru bernama `fruit`, dan set **Hubungan privasi anonim** ke *Kontainer (akses baca anonim untuk kontainer dan blob)*.
+1. Di panel kiri, di **Penyimpanan data**, pilih **Kontainer** dan buat kontainer baru bernama `fruit`, lalu atur **Level akses anonim** ke *Kontainer (akses baca anonim untuk kontainer dan blob)*.
 
     > **Catatan**: Jika **hubungan privasi anonim** dinonaktifkan, refresh halaman browser.
 
-1. Navigasikan ke `fruit`, dan unggah gambar (dan satu file JSON) di **Labfiles/02-image-classification/training-images** ke kontainer tersebut.
+1. Arahkan ke `fruit`, pilih **Unggah**, dan unggah gambar (dan satu file JSON) di **Labfiles/02-image-classification/training-images** ke kontainer tersebut.
 
 ## Membuat proyek pelatihan model kustom
 
 Selanjutnya, Anda akan membuat proyek pelatihan baru untuk klasifikasi gambar kustom di Vision Studio.
 
 1. Di browser web, navigasikan ke `https://portal.vision.cognitive.azure.com/` dan masuk dengan akun Microsoft tempat Anda membuat sumber daya Azure AI.
-1. Pilih ubin **Kustomisasi model dengan gambar** (dapat ditemukan di tab **Analisis gambar** jika tidak ditampilkan di tampilan default Anda), dan jika diminta pilih sumber daya Azure AI yang Anda buat.
+1. Pilih petak **Sesuaikan model dengan gambar** (dapat ditemukan di tab **Analisis gambar** jika tidak muncul di tampilan default Anda).
+1. Pilih akun Layanan Azure AI yang telah Anda buat.
 1. Di proyek Anda, pilih **Tambahkan himpunan data baru** di bagian atas. Konfigurasikan dengan pengaturan berikut:
     - **Nama himpunan data**: training_images
     - **Tipe model**: Klasifikasi gambar
@@ -108,6 +111,6 @@ Model Anda telah dilatih dan siap untuk diuji.
 
 Jika Anda tidak menggunakan sumber daya Azure yang dibuat di lab ini untuk modul pelatihan lainnya, Anda dapat menghapusnya untuk menghindari dikenakan biaya lebih lanjut.
 
-1. Buka portal Microsoft Azure di `https://portal.azure.com`, dan di bilah pencarian atas, cari sumber daya yang Anda buat di lab ini.
+1. Buka portal Microsoft Azure di`https://portal.azure.com`, dan di bilah pencarian atas, cari sumber daya yang Anda buat di lab ini.
 
 2. Pada halaman sumber daya, pilih **Hapus** dan ikuti instruksi untuk menghapus sumber daya. Atau, Anda dapat menghapus seluruh grup sumber daya untuk membersihkan semua sumber daya secara bersamaan.
