@@ -56,7 +56,7 @@ Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan
     **Python**
 
     ```
-    pip install azure-ai-vision==1.0.0b3
+    pip install azure-ai-vision-imageanalysis==1.0.0b3
     ```
     
 3. Lihat konten folder **computer-vision**, dan perhatikan bahwa folder tersebut berisi file untuk setelan konfigurasi:
@@ -209,13 +209,13 @@ Meskipun layanan **Azure AI Vision** menawarkan deteksi wajah dasar (bersama den
     **C#**
 
     ```
-    dotnet add package Microsoft.Azure.CognitiveServices.Vision.Face --version 2.8.0-preview.3
+    dotnet add package Azure.AI.Vision.Face -v 1.0.0-beta.2
     ```
 
     **Python**
 
     ```
-    pip install azure-cognitiveservices-vision-face==0.6.0
+    pip install azure-ai-vision-face==1.0.0b2
     ```
     
 3. Lihat konten folder **face-api**, dan perhatikan bahwa folder tersebut berisi file untuk setelan konfigurasi:
@@ -235,17 +235,17 @@ Meskipun layanan **Azure AI Vision** menawarkan deteksi wajah dasar (bersama den
 
     ```C#
     // Import namespaces
-    using Microsoft.Azure.CognitiveServices.Vision.Face;
-    using Microsoft.Azure.CognitiveServices.Vision.Face.Models;
+    using Azure;
+    using Azure.AI.Vision.Face;
     ```
 
     **Python**
 
     ```Python
     # Import namespaces
-    from azure.cognitiveservices.vision.face import FaceClient
-    from azure.cognitiveservices.vision.face.models import FaceAttributeType
-    from msrest.authentication import CognitiveServicesCredentials
+    from azure.ai.vision.face import FaceClient
+    from azure.ai.vision.face.models import FaceDetectionModel, FaceRecognitionModel, FaceAttributeTypeDetection03
+    from azure.core.credentials import AzureKeyCredential
     ```
 
 7. Dalam fungsi **Utama**, perhatikan bahwa kode untuk memuat pengaturan konfigurasi telah disediakan. Kemudian temukan komentar **Autentikasi klien Wajah**. Kemudian, di bawah komentar ini, tambahkan kode khusus bahasa berikut untuk membuat dan mengautentikasi objek **FaceClient** :
@@ -254,26 +254,26 @@ Meskipun layanan **Azure AI Vision** menawarkan deteksi wajah dasar (bersama den
 
     ```C#
     // Authenticate Face client
-    ApiKeyServiceClientCredentials credentials = new ApiKeyServiceClientCredentials(cogSvcKey);
-    faceClient = new FaceClient(credentials)
-    {
-        Endpoint = cogSvcEndpoint
-    };
+    faceClient = new FaceClient(
+        new Uri(cogSvcEndpoint),
+        new AzureKeyCredential(cogSvcKey));
     ```
 
     **Python**
 
     ```Python
     # Authenticate Face client
-    credentials = CognitiveServicesCredentials(cog_key)
-    face_client = FaceClient(cog_endpoint, credentials)
+    face_client = FaceClient(
+        endpoint=cog_endpoint,
+        credential=AzureKeyCredential(cog_key)
+    )
     ```
 
 8. Dalam fungsi **Utama**, di bawah kode yang baru saja Anda tambahkan, perhatikan bahwa kode menampilkan menu yang memungkinkan Anda memanggil fungsi dalam kode Anda untuk menjelajahi kemampuan layanan Face. Anda akan menerapkan fungsi-fungsi ini di sisa latihan ini.
 
 ## Deteksi dan analisis wajah
 
-Salah satu kemampuan paling mendasar dari layanan Face adalah mendeteksi wajah dalam gambar, dan menentukan atributnya, seperti pose kepala, samar-samar, keberadaan tontonan, dan sebagainya.
+Salah satu kemampuan paling mendasar dari layanan Wajah adalah mendeteksi wajah dalam gambar, dan menentukan atributnya, seperti pose kepala, buram, keberadaan topeng, dan sebagainya.
 
 1. Dalam file kode untuk aplikasi Anda, dalam fungsi **Utama**, periksa kode yang berjalan jika pengguna memilih opsi menu **1**. Kode ini memanggil fungsi **DetectFaces**, meneruskan jalur ke file gambar.
 2. Temukan fungsi **DetectFaces** dalam file kode, dan di bawah komentar **Tentukan fitur wajah yang akan diambil**, tambahkan kode berikut:
@@ -282,11 +282,11 @@ Salah satu kemampuan paling mendasar dari layanan Face adalah mendeteksi wajah d
 
     ```C#
     // Specify facial features to be retrieved
-    IList<FaceAttributeType> features = new FaceAttributeType[]
+    FaceAttributeType[] features = new FaceAttributeType[]
     {
-        FaceAttributeType.Occlusion,
-        FaceAttributeType.Blur,
-        FaceAttributeType.Glasses
+        FaceAttributeType.Detection03.HeadPose,
+        FaceAttributeType.Detection03.Blur,
+        FaceAttributeType.Detection03.Mask
     };
     ```
 
@@ -294,20 +294,26 @@ Salah satu kemampuan paling mendasar dari layanan Face adalah mendeteksi wajah d
 
     ```Python
     # Specify facial features to be retrieved
-    features = [FaceAttributeType.occlusion,
-                FaceAttributeType.blur,
-                FaceAttributeType.glasses]
+    features = [FaceAttributeTypeDetection03.HEAD_POSE,
+                FaceAttributeTypeDetection03.BLUR,
+                FaceAttributeTypeDetection03.MASK]
     ```
 
 3. Dalam fungsi **DetectFaces**, di bawah kode yang baru saja Anda tambahkan, temukan komentar **Dapatkan wajah** dan tambahkan kode berikut:
 
 **C#**
 
-```C
+```C#
 // Get faces
 using (var imageData = File.OpenRead(imageFile))
 {    
-    var detected_faces = await faceClient.Face.DetectWithStreamAsync(imageData, returnFaceAttributes: features, returnFaceId: false);
+    var response = await faceClient.DetectAsync(
+        BinaryData.FromStream(imageData),
+        FaceDetectionModel.Detection03,
+        FaceRecognitionModel.Recognition04,
+        returnFaceId: false,
+        returnFaceAttributes: features);
+    IReadOnlyList<FaceDetectionResult> detected_faces = response.Value;
 
     if (detected_faces.Count() > 0)
     {
@@ -328,10 +334,11 @@ using (var imageData = File.OpenRead(imageFile))
             Console.WriteLine($"\nFace number {faceCount}");
             
             // Get face properties
-            Console.WriteLine($" - Mouth Occluded: {face.FaceAttributes.Occlusion.MouthOccluded}");
-            Console.WriteLine($" - Eye Occluded: {face.FaceAttributes.Occlusion.EyeOccluded}");
+            Console.WriteLine($" - Head Pose (Yaw): {face.FaceAttributes.HeadPose.Yaw}");
+            Console.WriteLine($" - Head Pose (Pitch): {face.FaceAttributes.HeadPose.Pitch}");
+            Console.WriteLine($" - Head Pose (Roll): {face.FaceAttributes.HeadPose.Roll}");
             Console.WriteLine($" - Blur: {face.FaceAttributes.Blur.BlurLevel}");
-            Console.WriteLine($" - Glasses: {face.FaceAttributes.Glasses}");
+            Console.WriteLine($" - Mask: {face.FaceAttributes.Mask.Type}");
 
             // Draw and annotate face
             var r = face.FaceRectangle;
@@ -354,8 +361,13 @@ using (var imageData = File.OpenRead(imageFile))
 ```Python
 # Get faces
 with open(image_file, mode="rb") as image_data:
-    detected_faces = face_client.face.detect_with_stream(image=image_data,
-                                                            return_face_attributes=features,                     return_face_id=False)
+    detected_faces = face_client.detect(
+        image_content=image_data.read(),
+        detection_model=FaceDetectionModel.DETECTION03,
+        recognition_model=FaceRecognitionModel.RECOGNITION04,
+        return_face_id=False,
+        return_face_attributes=features,
+    )
 
     if len(detected_faces) > 0:
         print(len(detected_faces), 'faces detected.')
@@ -375,19 +387,11 @@ with open(image_file, mode="rb") as image_data:
             face_count += 1
             print('\nFace number {}'.format(face_count))
 
-            detected_attributes = face.face_attributes.as_dict()
-            if 'blur' in detected_attributes:
-                print(' - Blur:')
-                for blur_name in detected_attributes['blur']:
-                    print('   - {}: {}'.format(blur_name, detected_attributes['blur'][blur_name]))
-                    
-            if 'occlusion' in detected_attributes:
-                print(' - Occlusion:')
-                for occlusion_name in detected_attributes['occlusion']:
-                    print('   - {}: {}'.format(occlusion_name, detected_attributes['occlusion'][occlusion_name]))
-
-            if 'glasses' in detected_attributes:
-                print(' - Glasses:{}'.format(detected_attributes['glasses']))
+            print(' - Head Pose (Yaw): {}'.format(face.face_attributes.head_pose.yaw))
+            print(' - Head Pose (Pitch): {}'.format(face.face_attributes.head_pose.pitch))
+            print(' - Head Pose (Roll): {}'.format(face.face_attributes.head_pose.roll))
+            print(' - Blur: {}'.format(face.face_attributes.blur.blur_level))
+            print(' - Mask: {}'.format(face.face_attributes.mask.type))
 
             # Draw and annotate face
             r = face.face_rectangle
@@ -405,7 +409,7 @@ with open(image_file, mode="rb") as image_data:
         print('\nResults saved in', outputfile)
 ```
 
-4. Periksa kode yang Anda tambahkan ke fungsi **DetectFaces**. Ini menganalisis file gambar dan mendeteksi wajah apa pun yang dikandungnya, termasuk atribut untuk oklusi, kabur, dan adanya tontonan. Detail setiap wajah ditampilkan, termasuk pengidentifikasi wajah unik yang ditetapkan untuk setiap wajah; dan lokasi wajah ditunjukkan pada gambar menggunakan kotak pembatas.
+4. Periksa kode yang Anda tambahkan ke fungsi **DetectFaces**. Ini menganalisis file gambar dan mendeteksi wajah apa pun yang ada di dalamnya, termasuk atribut untuk pose kepala, buram, dan keberadaan topeng. Detail setiap wajah ditampilkan, termasuk pengidentifikasi wajah unik yang ditetapkan untuk setiap wajah; dan lokasi wajah ditunjukkan pada gambar menggunakan kotak pembatas.
 5. Simpan perubahan Anda dan kembali ke terminal terintegrasi untuk folder **face-api**, dan masukkan perintah berikut untuk menjalankan program:
 
     **C#**
@@ -431,4 +435,4 @@ Ada beberapa fitur tambahan yang tersedia dalam layanan **Face**, tetapi mengiku
 
 Untuk informasi selengkapnya tentang menggunakan layanan **Azure AI Vision** untuk deteksi wajah, lihat [dokumentasi Azure AI Vision](https://docs.microsoft.com/azure/cognitive-services/computer-vision/concept-detecting-faces).
 
-Untuk mempelajari lebih lanjut tentang layanan **Wajah**, lihat [dokumentasi Wajah](https://docs.microsoft.com/azure/cognitive-services/face/).
+Untuk mempelajari lebih lanjut tentang layanan **Wajah**, lihat [dokumentasi Wajah](https://learn.microsoft.com/azure/ai-services/computer-vision/overview-identity).
