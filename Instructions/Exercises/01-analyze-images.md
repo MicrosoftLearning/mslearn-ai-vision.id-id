@@ -6,7 +6,7 @@ lab:
 
 # Menganalisis Gambar dengan Azure AI Visual
 
-Azure AI Visual adalah kemampuan kecerdasan buatan yang memungkinkan sistem perangkat lunak menginterpretasikan input visual dengan menganalisis gambar. Di Microsoft Azure, layanan Azure AI **Vision** menyediakan model bawaan untuk tugas visi komputer umum, termasuk analisis gambar untuk menyarankan keterangan dan tag, deteksi objek dan orang umum. Anda juga dapat menggunakan layanan Azure AI Visual untuk menghapus latar belakang atau membuat pemotongan gambar latar depan.
+Azure AI Visual adalah kemampuan kecerdasan buatan yang memungkinkan sistem perangkat lunak menginterpretasikan input visual dengan menganalisis gambar. Di Microsoft Azure, layanan Azure AI **Vision** menyediakan model bawaan untuk tugas visi komputer umum, termasuk analisis gambar untuk menyarankan keterangan dan tag, deteksi objek dan orang umum. 
 
 ## Mengkloning repositori untuk kursus ini
 
@@ -408,86 +408,6 @@ if result.people is not None:
 3. Simpan perubahan Anda dan jalankan program sekali untuk setiap file gambar di folder **gambar**, mengamati objek apa pun yang terdeteksi. Setelah setiap kali dijalankan, lihat file **objects.jpg** yang dibuat dalam folder yang sama dengan file kode Anda untuk melihat objek yang dianotasi.
 
 > **Catatan**: Dalam tugas sebelumnya, Anda menggunakan satu metode untuk menganalisis gambar, lalu menambahkan kode secara bertahap untuk mengurai dan menampilkan hasilnya. SDK juga menyediakan metode individual untuk menyarankan keterangan, mengidentifikasi tag, mendeteksi objek, dan sebagainya - artinya Anda dapat menggunakan metode yang paling tepat untuk mengembalikan hanya informasi yang Anda butuhkan, mengurangi ukuran muatan data yang perlu dikembalikan. Lihat dokumentasi [.NET SDK](https://learn.microsoft.com/dotnet/api/overview/azure/cognitiveservices/computervision?view=azure-dotnet) atau [dokumentasi Python SDK](https://learn.microsoft.com/python/api/azure-cognitiveservices-vision-computervision/azure.cognitiveservices.vision.computervision) untuk detail selengkapnya.
-
-## Menghapus latar belakang atau menghasilkan potongan latar depan gambar
-
-Dalam beberapa kasus, Anda mungkin perlu membuat hapus latar belakang gambar atau mungkin ingin membuat potongan latar depan gambar tersebut. Mari kita mulai dengan penghapusan latar belakang.
-
-1. Dalam file kode Anda, temukan fungsi ** BackgroundForeground**; dan di bawah komentar **Hapus latar belakang dari gambar atau hasilkan potongan latar depan**, tambahkan kode berikut:
-
-**C#**
-
-```C#
-// Remove the background from the image or generate a foreground matte
-Console.WriteLine($" Background removal:");
-// Define the API version and mode
-string apiVersion = "2023-02-01-preview";
-string mode = "backgroundRemoval"; // Can be "foregroundMatting" or "backgroundRemoval"
-
-string url = $"computervision/imageanalysis:segment?api-version={apiVersion}&mode={mode}";
-
-// Make the REST call
-using (var client = new HttpClient())
-{
-    var contentType = new MediaTypeWithQualityHeaderValue("application/json");
-    client.BaseAddress = new Uri(endpoint);
-    client.DefaultRequestHeaders.Accept.Add(contentType);
-    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", key);
-
-    var data = new
-    {
-        url = $"https://github.com/MicrosoftLearning/mslearn-ai-vision/blob/main/Labfiles/01-analyze-images/Python/image-analysis/{imageFile}?raw=true"
-    };
-
-    var jsonData = JsonSerializer.Serialize(data);
-    var contentData = new StringContent(jsonData, Encoding.UTF8, contentType);
-    var response = await client.PostAsync(url, contentData);
-
-    if (response.IsSuccessStatusCode) {
-        File.WriteAllBytes("background.png", response.Content.ReadAsByteArrayAsync().Result);
-        Console.WriteLine("  Results saved in background.png\n");
-    }
-    else
-    {
-        Console.WriteLine($"API error: {response.ReasonPhrase} - Check your body url, key, and endpoint.");
-    }
-}
-```
-
-**Python**
-
-```Python
-# Remove the background from the image or generate a foreground matte
-print('\nRemoving background from image...')
-    
-url = "{}computervision/imageanalysis:segment?api-version={}&mode={}".format(endpoint, api_version, mode)
-
-headers= {
-    "Ocp-Apim-Subscription-Key": key, 
-    "Content-Type": "application/json" 
-}
-
-image_url="https://github.com/MicrosoftLearning/mslearn-ai-vision/blob/main/Labfiles/01-analyze-images/Python/image-analysis/{}?raw=true".format(image_file)  
-
-body = {
-    "url": image_url,
-}
-    
-response = requests.post(url, headers=headers, json=body)
-
-image=response.content
-with open("background.png", "wb") as file:
-    file.write(image)
-print('  Results saved in background.png \n')
-```
-    
-2. Simpan perubahan Anda dan jalankan program sekali untuk setiap file gambar di folder **gambar**, membuka file **background.png** yang dihasilkan di folder yang sama dengan file kode Anda untuk setiap gambar.  Perhatikan bagaimana latar belakang telah dihapus dari setiap gambar.
-
-Sekarang mari kita hasilkan potongan latar depan untuk gambar kita.
-
-3. Dalam file kode Anda, temukan fungsi **BackgroundForeground**; dan di bawah komentar **Tentukan versi API dan mode**, ubah variabel mode menjadi `foregroundMatting`.
-
-4. Simpan perubahan Anda dan jalankan program sekali untuk setiap file gambar di folder **gambar**, membuka file **background.png** yang dihasilkan di folder yang sama dengan file kode Anda untuk setiap gambar.  Perhatikan bagaimana potongan latar depan telah dihasilkan untuk gambar Anda.
 
 ## Membersihkan sumber daya
 
