@@ -1,10 +1,10 @@
-#README
+# Mengenmbangkan solusi visi komputer di Azure
 
-We've turned off the ability to report issues directly on this repo and do not monitor PRs.
+Latihan di repo ini dirancang untuk memberikan pengalaman belajar praktik, di mana Anda akan mempelajari tugas-tugas umum yang dilakukan oleh pengembang saat membuat solusi visi komputer di Microsoft Azure.
 
-Provide feedback here: https://aka.ms/provide-feedback
+> **Catatan**: Untuk menyelesaikan latihan, Anda memerlukan langganan Azure di mana Anda memiliki izin dan kuota yang memadai untuk menyediakan sumber daya Azure dan model AI generatif. Jika Anda belum memilikinya, Anda bisa mendaftar untuk mendapatkan [akun Azure](https://azure.microsoft.com/free). Ada opsi uji coba gratis untuk pengguna baru yang menyertakan kredit selama 30 hari pertama.
 
-Or, if you are a trainer with a microsoft.com email address, please create a ticket in AzDO.
+[Lihat latihan di situs Halaman GitHub untuk repo ini](https://go.microsoft.com/fwlink/?linkid=2318640)
 
-# mslearn-ai-vision
-File lab untuk modul Azure AI Visual
+> **Catatan**: Meskipun Anda dapat menyelesaikan latihan ini sendiri, latihan ini dirancang untuk melengkapi modul di [Microsoft Learn](https://learn.microsoft.com/training/paths/create-computer-vision-solutions-azure-ai/); di mana Anda akan menemukan penyelaman yang lebih dalam ke dalam beberapa konsep dasar yang menjadi konsep dasar latihan ini.
+
