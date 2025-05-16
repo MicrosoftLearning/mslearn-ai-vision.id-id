@@ -57,7 +57,7 @@ Untuk melatih model deteksi objek, Anda perlu membuat proyek Custom Vision berda
 
 Untuk melatih model deteksi objek, Anda perlu mengunggah gambar yang berisi kelas yang ingin diidentifikasi oleh model, dan memberi tag gambar untuk menunjukkan kotak pembatas untuk setiap instans objek.
 
-1. Di Visual Studio Code, lihat gambar pelatihan di folder **03-object-detection/training-images** tempat Anda mengkloning repositori. Folder ini berisi gambar buah.
+1. Di Visual Studio Code, lihat gambar pelatihan di folder **Labfiles/03-object-detection/training-images** tempat Anda mengkloning repositori. Folder ini berisi gambar buah.
 2. Di portal Custom Vision, di proyek deteksi objek Anda, pilih **Tambah gambar** dan unggah semua gambar dalam folder yang diekstrak.
 3. Setelah gambar diunggah, pilih yang pertama untuk membukanya.
 4. Tahan mouse di atas objek apa pun pada gambar hingga wilayah yang terdeteksi secara otomatis ditampilkan seperti gambar di bawah ini. Kemudian pilih objek, dan jika perlu ubah ukuran wilayah untuk mengelilinginya.
@@ -89,7 +89,7 @@ Anda dapat menggunakan UI di portal Custom Vision untuk menandai gambar Anda, te
 1. Klik ikon *pengaturan* (&#9881;) di kanan atas halaman **Gambar Pelatihan** di portal Custom Vision untuk melihat pengaturan proyek.
 2. Di bawah **Umum** (di sebelah kiri), perhatikan **Project Id** yang secara unik mengidentifikasi proyek ini.
 3. Di sebelah kanan, di bawah **Sumber daya** perhatikan bahwa kunci dan titik akhir ditampilkan. Ini adalah detail untuk sumber daya *pelatihan* (Anda juga dapat memperoleh informasi ini dengan melihat sumber daya di portal Microsoft Azure).
-4. Di Visual Studio Code, di bawah folder **03-object-detection**, luaskan folder **C-Sharp** atau **Python** bergantung pada preferensi bahasa Anda.
+4. Di Visual Studio Code, di bawah folder **Labfiles/03-object-detection**, luaskan folder **C-Sharp** atau **Python** bergantung pada preferensi bahasa Anda.
 5. Klik kanan folder **train-detector** dan buka terminal terintegrasi. Kemudian instal paket Pelatihan Custom Vision dengan menjalankan perintah yang sesuai untuk preferensi bahasa Anda:
 
 **C#**
@@ -165,7 +165,7 @@ Sekarang Anda siap untuk memublikasikan model terlatih Anda sehingga dapat digun
 
 Sekarang setelah Anda memublikasikan model klasifikasi gambar, Anda dapat menggunakannya dari aplikasi klien. Sekali lagi, Anda dapat memilih untuk menggunakan **C#** atau **Python**.
 
-1. Di Visual Studio Code, telusuri ke folder **03-object-detection** dan di folder untuk bahasa pilihan Anda (**C-Sharp** atau **Python**), perluas folder **test-detector**.
+1. Di Visual Studio Code, telusuri ke folder **Labfiles/03-object-detection** dan di folder untuk bahasa pilihan Anda (**C-Sharp** atau **Python**), perluas folder **test-detector**.
 2. Klik kanan folder **test-detector** dan buka terminal terintegrasi. Kemudian masukkan perintah khusus SDK berikut untuk menginstal paket Prediksi Visi Kustom:
 
 **C#**

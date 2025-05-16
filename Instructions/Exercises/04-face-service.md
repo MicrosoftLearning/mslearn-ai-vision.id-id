@@ -44,7 +44,7 @@ Dalam latihan ini, Anda akan menyelesaikan aplikasi klien yang diimplementasikan
 
 > **Catatan**: Anda dapat memilih untuk menggunakan SDK baik untuk **C#** atau **Python**. Dalam langkah-langkah di bawah ini, lakukan tindakan yang sesuai untuk bahasa pilihan Anda.
 
-1. Di Visual Studio Code, di panel **Explorer**, telusur ke folder **04-face** dan perluas folder **C-Sharp** atau **Python** tergantung pada preferensi bahasa Anda.
+1. Di Visual Studio Code, di panel **Explorer**, telusur ke folder **Labfiles/04-face** dan perluas folder **C-Sharp** atau **Python** tergantung pada preferensi bahasa Anda.
 2. Klik kanan folder **computer-vision** dan buka terminal terintegrasi. Kemudian instal paket Azure AI Vision SDK dengan menjalankan perintah yang sesuai untuk preferensi bahasa Anda:
 
     **C#**
@@ -203,7 +203,7 @@ Jika Anda ingin melihat skor keyakinan semua orang yang terdeteksi layanan, Anda
 
 Meskipun layanan **Azure AI Vision** menawarkan deteksi wajah dasar (bersama dengan banyak kemampuan analisis gambar lainnya), layanan **Face** menyediakan fungsionalitas yang lebih komprehensif untuk analisis dan pengenalan wajah.
 
-1. Di Visual Studio Code, di panel **Explorer**, telusur ke folder **04-face** dan perluas folder **C-Sharp** atau **Python** tergantung pada preferensi bahasa Anda.
+1. Di Visual Studio Code, di panel **Explorer**, telusur ke folder **Labfiles/04-face** dan perluas folder **C-Sharp** atau **Python** tergantung pada preferensi bahasa Anda.
 2. Klik kanan folder **face-api** dan buka terminal terintegrasi. Kemudian instal paket Face SDK dengan menjalankan perintah yang sesuai untuk preferensi bahasa Anda:
 
     **C#**

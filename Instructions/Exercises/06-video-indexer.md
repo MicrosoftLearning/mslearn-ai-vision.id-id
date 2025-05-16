@@ -82,7 +82,7 @@ Anda dapat menggunakan Video Indexer untuk mencari video guna mendapatkan wawasa
 
 Portal Video Indexer adalah antarmuka yang berguna untuk mengelola proyek pengindeksan video. Namun, ada kalanya Anda ingin berbagi video dan wawasannya dengan orang lain yang tidak memiliki akses ke akun Video Indexer Anda. Video Indexer menyediakan widget yang dapat Anda sematkan di halaman web untuk tujuan ini.
 
-1. Di Visual Studio Code, di folder **06-video-indexer**, buka **analyze-video.html**. Ini adalah halaman HTML dasar tempat Anda akan menambahkan widget **Pemutar** dan **Wawasan** Video Indexer. Perhatikan referensi ke skrip **vb.widgets.mediator.js** di header - skrip ini memungkinkan beberapa widget Video Indexer di halaman untuk berinteraksi satu sama lain.
+1. Di Visual Studio Code, di folder **Labfiles/06-video-indexer**, buka **analyze-video.html**. Ini adalah halaman HTML dasar tempat Anda akan menambahkan widget **Pemutar** dan **Wawasan** Video Indexer. Perhatikan referensi ke skrip **vb.widgets.mediator.js** di header - skrip ini memungkinkan beberapa widget Video Indexer di halaman untuk berinteraksi satu sama lain.
 2. Di portal Video Indexer, kembali ke halaman **File media** dan buka video **AI yang Bertanggung Jawab**.
 3. Di bagian pemutar video, pilih **&lt;/&gt; Sematkan** guna melihat kode iframe HTML untuk menyematkan widget.
 4. Di kotak dialog **Bagikan dan Sematkan**, pilih widget **Pemutar**, atur ukuran video ke 560 x 315, lalu salin kode semat ke clipboard.
@@ -117,7 +117,7 @@ Semua interaksi dengan REST API Video Indexer mengikuti pola yang sama:
 - Permintaan awal ke metode **AccessToken** dengan kunci API di header digunakan untuk mendapatkan token akses.
 - Permintaan berikutnya menggunakan token akses untuk mengautentikasi saat memanggil metode REST agar berfungsi dengan video.
 
-1. Di Visual Studio Code, di folder **06-video-indexer**, buka **get-videos.ps1**.
+1. Di Visual Studio Code, di folder **Labfiles/06-video-indexer**, buka **get-videos.ps1**.
 2. Dalam skrip PowerShell, ganti tempat penampung **YOUR_ACCOUNT_ID** dan **YOUR_API_KEY** dengan ID akun dan nilai kunci API yang Anda identifikasi sebelumnya.
 3. Perhatikan bahwa *lokasi* untuk akun gratis adalah "percobaan". Jika Anda sudah membuat akun Video Indexer yang tidak dibatasi (dengan sumber daya Azure terkait), Anda dapat mengubahnya ke lokasi tempat sumber daya Azure Anda disediakan (misalnya "eastus").
 4. Tinjau kode dalam skrip, perhatikan bahwa memanggil dua metode REST: satu untuk mendapatkan token akses, dan satu lagi untuk membuat daftar video di akun Anda.
