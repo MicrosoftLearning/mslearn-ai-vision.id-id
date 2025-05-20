@@ -46,7 +46,7 @@ Dalam latihan ini, Anda akan membuat sumber daya **Penglihatan Khusus** untuk pe
 
 Untuk melatih model klasifikasi gambar, Anda perlu membuat proyek Visi Kustom berdasarkan sumber daya pelatihan Anda. Untuk melakukannya, Anda akan menggunakan portal Custom Vision.
 
-1. Di Visual Studio Code, lihat gambar pelatihan di folder **LabFiles/07-custom-vision-image-classification/training-images** tempat Anda mengkloning repositori. Folder ini berisi sub-folder gambar apel, pisang, dan jeruk.
+1. Di Visual Studio Code, lihat gambar pelatihan di folder **Labfiles/07-custom-vision-image-classification/training-images** tempat Anda mengkloning repositori. Folder ini berisi sub-folder gambar apel, pisang, dan jeruk.
 2. Di tab browser baru, buka portal Visi Khusus di `https://customvision.ai`. Jika diminta, masuk menggunakan akun Microsoft yang terkait dengan langganan Azure Anda dan setujui ketentuan layanan.
 3. Di portal Custom Vision, buat proyek baru dengan pengaturan berikut:
     - **Nama**: Klasifikasi Buah
@@ -55,7 +55,7 @@ Untuk melatih model klasifikasi gambar, Anda perlu membuat proyek Visi Kustom be
     - **Jenis Proyek**: Klasifikasi
     - **Jenis Klasifikasi**: Multikelas (satu tag per gambar)
     - **Domain**: Makanan
-4. Dalam proyek baru, klik **\[+\] Tambahkan gambar**, dan pilih semua file di folder **LabFiles/07-custom-vision-image-classification/training-images/apple** yang Anda lihat sebelumnya. Kemudian unggah file gambar, tentukan tag *apel*, seperti ini:
+4. Dalam proyek baru, klik **\[+\] Tambahkan gambar**, dan pilih semua file di folder **Labfiles/07-custom-vision-image-classification/training-images/apple** yang Anda lihat sebelumnya. Kemudian unggah file gambar, tentukan tag *apel*, seperti ini:
 
 ![Unggah apel dengan tag apel](../media/upload_apples.jpg)
    
